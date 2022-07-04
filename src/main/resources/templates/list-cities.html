@@ -1,0 +1,72 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>City Temperatures</title>
+
+    <link rel="stylesheet"
+          type="text/css"
+          href="https://cdn.datatables.net/v/bs4/dt-1.10.25/datatables.min.css" />
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+          integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
+          crossorigin="anonymous" />
+</head>
+
+<body>
+
+<div class="container">
+
+    <h3>City Temperatures in Argentina</h3>
+
+    <hr/>
+    <table class="table table-hover table-responsive-sm" id="weathertable">
+
+        <thead>
+        <tr>
+            <th>Last update</th>
+            <th>City</th>
+            <th>Province</th>
+            <th>Temperature</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="city : ${cityPage.content}">
+            <td th:text="${#temporals.format(city.lastUpdate, 'dd-MM HH:mm:ss')}" />
+            <td th:text="${city.name}" />
+            <td th:text="${city.province}"  />
+            <td th:text="${city.temperature}" />
+        </tr>
+        </tbody>
+    </table>
+    <nav>
+        <ul class="pagination" th:if="${cityPage.totalPages > 0}">
+            <li class="page-item" th:classappend="${ cityPage.number > 0  ? 'active' : 'disabled'}">
+                <a class="page-link" th:href="@{/temperatures(size=${cityPage.size}, page=${cityPage.number - 1})}"
+                   tabindex="-1">Previous</a>
+            </li>
+            <th:block th:each="pageNumber: ${pageNumbers}">
+                <li class="page-item" th:classappend="${(cityPage.number+1) == pageNumber ? 'active' : ''}" >
+                    <a class="page-link" th:href="@{/temperatures(size=${cityPage.size}, page=${pageNumber - 1})}" th:text="${pageNumber}"></a></li>
+            </th:block>
+            <li class="page-item" th:classappend="${ (cityPage.number+1) != cityPage.totalPages  ? 'active' : 'disabled'}">
+                <a class="page-link" th:href="@{/temperatures(size=${cityPage.size}, page=${cityPage.number + 1})}">Next</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.25/datatables.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $("#weatherTable").DataTable({
+            'aoColumnDefs': [{
+                'bSortable': true,
+                'aTargets': [-1]
+            }]
+        });
+    })
+</script>
+</body>
+
+</html>

@@ -1,0 +1,13 @@
+spring:
+  profiles:
+    active: dev
+
+  resilience4j.circuitbreaker:
+    instances:
+      get-list:
+        registerHealthIndicator: true
+        ringBufferSizeInClosedState: 3
+        ringBufferSizeInHalfOpenState: 5
+        waitDurationInOpenState: 10s
+        failureRateThreshold: 60
+

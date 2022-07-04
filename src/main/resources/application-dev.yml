@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    url: jdbc:mysql://sql10.freemysqlhosting.net:3306/sql10503629
+    username: sql10503629
+    password: bajISuEaXJ
+  jpa:
+    hibernate:
+      ddl-auto: update
